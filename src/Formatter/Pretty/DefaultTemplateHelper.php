@@ -18,7 +18,15 @@ namespace League\BooBoo\Formatter\Pretty;
  */
 class DefaultTemplateHelper extends AbstractTemplateHelper
 {
-    use FinderAware;
+    /**
+     * @var Finder
+     */
+    protected $templateFinder;
+
+    /**
+     * @var Finder
+     */
+    protected $assetFinder;
 
     /**
      * Store the data to make it available in all templates
@@ -28,11 +36,21 @@ class DefaultTemplateHelper extends AbstractTemplateHelper
     protected $data = [];
 
     /**
+     * @param Finder $templateFinder
+     * @param Finder $assetFinder
+     */
+    public function __construct(Finder $templateFinder, Finder $assetFinder)
+    {
+        $this->templateFinder = $templateFinder;
+        $this->assetFinder = $assetFinder;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function render($template, array $data = [])
     {
-        $template = $this->finder->find($template);
+        $template = $this->templateFinder->find($template);
 
         $this->data = array_merge($this->data, $data);
 
@@ -60,5 +78,15 @@ class DefaultTemplateHelper extends AbstractTemplateHelper
         };
 
         return $loadTemplate($template, $this->data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function asset($asset)
+    {
+        $asset = $this->assetFinder->find($asset);
+
+        return file_get_contents($asset);
     }
 }

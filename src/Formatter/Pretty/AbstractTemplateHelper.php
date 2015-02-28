@@ -12,7 +12,7 @@
 namespace League\BooBoo\Formatter\Pretty;
 
 /**
- * Abstract Template helper
+ * Abstract Template helper required for the core templates
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -39,6 +39,7 @@ abstract class AbstractTemplateHelper implements TemplateHelper
             // we do not blacklist anything anywhere.
             $flags |= ENT_IGNORE;
         }
+
         return htmlspecialchars($raw, $flags, "UTF-8");
     }
 
@@ -71,6 +72,16 @@ abstract class AbstractTemplateHelper implements TemplateHelper
     {
         $slug = str_replace(" ", "-", $original);
         $slug = preg_replace('/[^\w\d\-\_]/i', '', $slug);
+
         return strtolower($slug);
     }
+
+    /**
+     * Dumps an asset
+     *
+     * @param string $asset
+     *
+     * @return string
+     */
+    abstract public function asset($asset);
 }

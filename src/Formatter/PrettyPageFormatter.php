@@ -38,15 +38,12 @@ class PrettyPageFormatter extends AbstractFormatter
      */
     protected $templateHelper;
 
-    /**
-     * @var Pretty\AssetHelper
-     */
-    protected $assetHelper;
-
-    public function __construct(Pretty\TemplateHelper $templateHelper = null, Pretty\AssetHelper $assetHelper = null)
+    public function __construct(Pretty\TemplateHelper $templateHelper = null)
     {
-        $this->templateHelper = $templateHelper ?: new Pretty\DefaultTemplateHelper(new Pretty\DefaultFinder([__DIR__.'/../../resources/views/']));
-        $this->assetHelper = $assetHelper ?: new Pretty\DefaultAssetHelper(new Pretty\DefaultFinder([__DIR__.'/../../resources/assets/']));
+        $this->templateHelper = $templateHelper ?: new Pretty\DefaultTemplateHelper(
+            new Pretty\DefaultFinder([__DIR__.'/../../resources/views/']),
+            new Pretty\DefaultFinder([__DIR__.'/../../resources/assets/'])
+        );
     }
 
     /**
@@ -65,7 +62,6 @@ class PrettyPageFormatter extends AbstractFormatter
         $tables = array_merge($this->getDefaultTables(), $this->tables);
 
         $data = [
-            'assetHelper'    => $this->assetHelper,
             'pageTitle'      => $this->pageTitle,
             'title'          => $this->pageTitle,
             'name'           => explode('\\', $inspector->getExceptionName()),
