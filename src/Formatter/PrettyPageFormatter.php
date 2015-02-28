@@ -26,7 +26,7 @@ class PrettyPageFormatter extends AbstractFormatter
     /**
      * @var array
      */
-    protected $extraTables = [];
+    protected $tables = [];
 
     /**
      * @var string
@@ -62,6 +62,8 @@ class PrettyPageFormatter extends AbstractFormatter
             $code = $this->determineSeverityTextValue($e->getSeverity());
         }
 
+        $tables = array_merge($this->getDefaultTables(), $this->tables);
+
         $data = [
             'assetHelper'    => $this->assetHelper,
             'pageTitle'      => $this->pageTitle,
@@ -72,22 +74,8 @@ class PrettyPageFormatter extends AbstractFormatter
             'plainException' => $this->formatExceptionPlain($inspector),
             'frames'         => $frames,
             'hasFrames'      => count($frames) > 0,
-            'tables'         => [
-                'Server/Request Data'   => $_SERVER,
-                'GET Data'              => $_GET,
-                'POST Data'             => $_POST,
-                'Files'                 => $_FILES,
-                'Cookies'               => $_COOKIE,
-                'Session'               => isset($_SESSION) ? $_SESSION :  [],
-                'Environment Variables' => $_ENV,
-            ],
+            'tables'         => $this->processTables($tables),
         ];
-
-        $extraTables = array_map(function ($table) {
-            return $table instanceof \Closure ? $table() : $table;
-        }, $this->getDataTables());
-
-        $data['tables'] = array_merge($extraTables, $data['tables']);
 
         return $this->templateHelper->render('layout.html.php', $data);
     }
@@ -108,56 +96,70 @@ class PrettyPageFormatter extends AbstractFormatter
     }
 
     /**
-     * Returns all the extra data tables registered with this handler.
-     * Optionally accepts a 'label' parameter, to only return the data
-     * table under that label.
+     * Adds an entry to the list of tables displayed in the template
      *
-     * @param string|null $label
-     *
-     * @return array[]|callable
-     */
-    public function getDataTables($label = null)
-    {
-        if ($label !== null) {
-            return isset($this->extraTables[$label]) ? $this->extraTables[$label] : [];
-        }
-
-        return $this->extraTables;
-    }
-
-    /**
-     * Adds an entry to the list of tables displayed in the template.
      * The expected data is a simple associative array. Any nested arrays
      * will be flattened with print_r
      *
-     * @param string $label
-     * @param array  $data
+     * @param Pretty\Table $table
      */
-    public function addDataTable($label, array $data)
+    public function addTable(Pretty\Table $table)
     {
-        $this->extraTables[$label] = $data;
+        $this->tables[] = $table;
     }
+
     /**
-     * Lazily adds an entry to the list of tables displayed in the table.
-     * The supplied callback argument will be called when the error is rendered,
-     * it should produce a simple associative array. Any nested arrays will
-     * be flattened with print_r.
+     * Returns the default tables
      *
-     * @param string   $label
-     * @param callable $callback
+     * @return Pretty\Table[]
      */
-    public function addDataTableCallback($label, callable $callback)
+    protected function getDefaultTables()
     {
-        $this->extraTables[$label] = function () use ($callback) {
+        return [
+            new Pretty\ArrayTable('Server/Request Data', $_SERVER),
+            new Pretty\ArrayTable('GET Data', $_GET),
+            new Pretty\ArrayTable('POST Data', $_POST),
+            new Pretty\ArrayTable('Files', $_FILES),
+            new Pretty\ArrayTable('Cookies', $_COOKIE),
+            new Pretty\ArrayTable('Session', isset($_SESSION) ? $_SESSION :  []),
+            new Pretty\ArrayTable('Environment Variables', $_ENV),
+        ];
+    }
+
+    /**
+     * Processes an array of tables making sure everything is allright
+     *
+     * @param Pretty\Table[] $tables
+     *
+     * @return array
+     */
+    protected function processTables(array $tables)
+    {
+        $processedTables = [];
+
+        foreach ($tables as $table) {
+            // Make it foolproof so nothing bad can happen
+            if (!$table instanceof Pretty\Table) {
+                continue;
+            }
+
+            $label = $table->getLabel();
+
             try {
-                $result = call_user_func($callback);
-                // Only return the result if it can be iterated over by foreach().
-                return is_array($result) || $result instanceof \Traversable ? $result : [];
+                $data = $table->getData();
+
+                if (!(is_array($data) || $data instanceof \Traversable)) {
+                    $data = [];
+                }
             } catch (\Exception $e) {
                 // Don't allow failure to break the rendering of the original exception.
-                return [];
+                $data = [];
             }
-        };
+
+            $processedTables[$label] = $data;
+        }
+
+        return $processedTables;
     }
 
     /**
