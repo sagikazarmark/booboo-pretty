@@ -48,10 +48,10 @@ a {
 }
 
 header {
-    background: #272727;
+    background: @header-bg-color;
     border-left: 5px solid @primary-color;
     box-sizing: border-box;
-    color: white;
+    color: @header-color;
     padding: 30px 20px;
 }
 
@@ -106,7 +106,7 @@ header {
 
 
     &.active {
-        background-color: #4288CE;
+        background-color: @secondary-color;
         box-shadow: inset -2px 0 0 rgba(255, 255, 255, .1);
         color: #F3F3F3;
         text-shadow: 0 1px 0 rgba(0, 0, 0, .2);
@@ -115,63 +115,60 @@ header {
     &:not(.active):hover {
         background: #BEE9EA;
     }
-}
 
+    &-function {
+        font-weight: bold;
+    }
 
-        .frame-class, .frame-function, .frame-index {
-            font-weight: bold;
+    &-index {
+        color: #BDBDBD;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    &-class {
+        color: @secondary-color;
+        font-weight: bold;
+
+        .active & {
+            color: #BEE9EA;
+        }
+    }
+
+    &-file {
+        font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
+        word-wrap: break-word;
+
+        .editor-link {
+            color: #272727;
+        }
+    }
+
+    &-line {
+        color: @secondary-color;
+        font-weight: bold;
+
+        .active & {
+            color: #BEE9EA;
         }
 
-        .frame-index {
-            color: #BDBDBD;
-            font-size: 11px;
+        &:before {
+            content: ":";
+        }
+    }
+
+    &-code {
+        background: #BDBDBD;
+        border-left: 5px solid @secondary-color;
+        display: none;
+        padding-left: 5px;
+        padding: 10px;
+
+        &.active {
+            display: block;
         }
 
-        .frame-class {
-            color: #4288CE;
-
-            .active & {
-                color: #BEE9EA;
-            }
-        }
-
-        .frame-file {
-            font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
-            word-wrap: break-word;
-
-            .editor-link {
-                color: #272727;
-            }
-        }
-
-        .frame-line {
-            color: #4288CE;
-            font-weight: bold;
-
-            .active & {
-                color: #BEE9EA;
-            }
-
-            &:before {
-                content: ":";
-            }
-        }
-
-
-        .frame-code {
-            background: #BDBDBD;
-            border-left: 5px solid #4288CE;
-            display: none;
-            padding-left: 5px;
-            padding: 10px;
-
-            &.active {
-                display: block;
-            }
-        }
-
-
-        .frame-code .frame-file {
+        &-file {
             background: #C6C6C6;
             border-bottom: none;
             border-top-left-radius:  6px;
@@ -182,70 +179,64 @@ header {
             padding: 10px 10px 5px 10px;
             text-shadow: 0 1px 0 #E7E7E7;
         }
+    }
 
-        .code-block {
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-            margin: 0;
-            padding: 10px;
+    &-comments {
+        background: #404040;
+        border-bottom-left-radius:  6px;
+        border-bottom-right-radius: 6px;
+        border-top: none;
+        border: 1px solid rgba(0, 0, 0, .2);
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        font-size: 12px;
+        padding: 5px;
+
+        &.empty {
+            padding: 8px 15px;
+
+            &:before {
+                color: #828282;
+                content: "No comments for this stack frame.";
+                font-style: italic;
+            }
         }
+    }
 
-        .linenums {
-            margin-left: 10px;
-            margin: 0;
-        }
+    &-comment {
+        color: #D2D2D2;
+        padding: 10px;
 
-        .frame-comments {
-            background: #404040;
-            border-bottom-left-radius:  6px;
-            border-bottom-right-radius: 6px;
-            border-top: none;
-            border: 1px solid rgba(0, 0, 0, .2);
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-            font-size: 12px;
-            padding: 5px;
+        a {
+            color: #BEE9EA;
+            font-weight: bold;
+            text-decoration: none;
 
-            &.empty {
-                padding: 8px 15px;
-
-                &:before {
-                    color: #828282;
-                    content: "No comments for this stack frame.";
-                    font-style: italic;
-                }
+            &:hover {
+                color: #4BB1B1;
             }
         }
 
-
-
-        .frame-comment {
-            color: #D2D2D2;
-            padding: 10px;
-
-            a {
-                color: #BEE9EA;
-                font-weight: bold;
-                text-decoration: none;
-
-                &:hover {
-                    color: #4BB1B1;
-                }
-            }
-
-            &:not(:last-child) {
-                border-bottom: 1px dotted rgba(0, 0, 0, .3);
-            }
+        &:not(:last-child) {
+            border-bottom: 1px dotted rgba(0, 0, 0, .3);
         }
 
-
-        .frame-comment-context {
+        &-context {
             color: #86D2B6;
             font-size: 10px;
             font-weight: bold;
         }
+    }
+}
+
+.code-block {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    margin: 0;
+    padding: 10px;
+}
 
 .data-table-container label {
     border-bottom: 1px dotted rgba(0, 0, 0, .2);
-    color: #4288CE;
+    color: @secondary-color;
     display: block;
     font-size: 16px;
     font-weight: bold;
@@ -299,40 +290,30 @@ header {
 }
 
 
-.handler {
-    font: 14px "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
-    padding: 10px;
-
-    &.active {
-        background: #989898;
-        color: #BBBBBB;
-        font-weight: bold;
-    }
-}
-
-
 /* prettify code style Uses the Doxy theme as a base */
-pre .str, code .str { color: #BCD42A; }  /* string  */
-pre .kwd, code .kwd { color: #4bb1b1;  font-weight: bold; }  /* keyword*/
-pre .com, code .com { color: #888; font-weight: bold; } /* comment */
-pre .typ, code .typ { color: #ef7c61; }  /* type  */
-pre .lit, code .lit { color: #BCD42A; }  /* literal */
-pre .pun, code .pun { color: #fff; font-weight: bold;  } /* punctuation  */
-pre .pln, code .pln { color: #e9e4e5; }  /* plaintext  */
-pre .tag, code .tag { color: #4bb1b1; }  /* html/xml tag  */
-pre .htm, code .htm { color: #dda0dd; }  /* html tag */
-pre .xsl, code .xsl { color: #d0a0d0; }  /* xslt tag */
-pre .atn, code .atn { color: #ef7c61; font-weight: normal;} /* html/xml attribute name */
-pre .atv, code .atv { color: #bcd42a; }  /* html/xml attribute value  */
-pre .dec, code .dec { color: #606; }  /* decimal  */
+pre, code {
+    .str { color: #BCD42A; /* string */ }
+    .kwd { color: #4bb1b1;  font-weight: bold; /* keyword */ }
+    .com { color: #888; font-weight: bold; /* comment */ }
+    .typ { color: #ef7c61; /* type */ }
+    .lit { color: #BCD42A; /* literal */ }
+    .pun { color: #fff; font-weight: bold; /* punctuation */ }
+    .pln { color: #e9e4e5; /* plaintext */ }
+    .tag { color: #4bb1b1; /* html/xml tag */ }
+    .htm { color: #dda0dd; /* html tag */ }
+    .xsl { color: #d0a0d0; /* xslt tag */ }
+    .atn { color: #ef7c61; font-weight: normal; /* html/xml attribute name */ }
+    .atv { color: #bcd42a; /* html/xml attribute value  */ }
+    .dec { color: #606; /* decimal */ }
 
-pre.prettyprint, code.prettyprint {
-    background: #333;
-    color: #e9e4e5;
-    font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
+    &.prettyprint {
+        background: #333;
+        color: #e9e4e5;
+        font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
 
-    a {
-        text-decoration:none;
+        a {
+            text-decoration:none;
+        }
     }
 }
 
@@ -340,16 +321,21 @@ pre.prettyprint {
     white-space: pre-wrap;
 }
 
-.linenums li {
-    color: #A5A5A5;
+.linenums {
+    margin-left: 10px;
+    margin: 0;
 
-    &.current {
-        background: rgba(255, 100, 100, .07);
-        padding-left: 1px;
-        padding-top: 4px;
+    li {
+        color: #A5A5A5;
 
-        &.active {
-            background: rgba(255, 100, 100, .17);
+        &.current {
+            background: rgba(255, 100, 100, .07);
+            padding-left: 1px;
+            padding-top: 4px;
+
+            &.active {
+                background: rgba(255, 100, 100, .17);
+            }
         }
     }
 }

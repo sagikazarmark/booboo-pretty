@@ -44,7 +44,7 @@ header {
   background: #272727;
   border-left: 5px solid #cd3f3f;
   box-sizing: border-box;
-  color: white;
+  color: #ffffff;
   padding: 30px 20px;
 }
 .exc-title {
@@ -90,7 +90,7 @@ header {
   padding: 14px;
 }
 .frame.active {
-  background-color: #4288CE;
+  background-color: #4288ce;
   box-shadow: inset -2px 0 0 rgba(255, 255, 255, 0.1);
   color: #F3F3F3;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
@@ -98,17 +98,17 @@ header {
 .frame:not(.active):hover {
   background: #BEE9EA;
 }
-.frame-class,
-.frame-function,
-.frame-index {
+.frame-function {
   font-weight: bold;
 }
 .frame-index {
   color: #BDBDBD;
   font-size: 11px;
+  font-weight: bold;
 }
 .frame-class {
-  color: #4288CE;
+  color: #4288ce;
+  font-weight: bold;
 }
 .active .frame-class {
   color: #BEE9EA;
@@ -121,7 +121,7 @@ header {
   color: #272727;
 }
 .frame-line {
-  color: #4288CE;
+  color: #4288ce;
   font-weight: bold;
 }
 .active .frame-line {
@@ -132,7 +132,7 @@ header {
 }
 .frame-code {
   background: #BDBDBD;
-  border-left: 5px solid #4288CE;
+  border-left: 5px solid #4288ce;
   display: none;
   padding-left: 5px;
   padding: 10px;
@@ -140,7 +140,7 @@ header {
 .frame-code.active {
   display: block;
 }
-.frame-code .frame-file {
+.frame-code-file {
   background: #C6C6C6;
   border-bottom: none;
   border-top-left-radius: 6px;
@@ -150,15 +150,6 @@ header {
   color: #525252;
   padding: 10px 10px 5px 10px;
   text-shadow: 0 1px 0 #E7E7E7;
-}
-.code-block {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  margin: 0;
-  padding: 10px;
-}
-.linenums {
-  margin-left: 10px;
-  margin: 0;
 }
 .frame-comments {
   background: #404040;
@@ -198,9 +189,14 @@ header {
   font-size: 10px;
   font-weight: bold;
 }
+.code-block {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  margin: 0;
+  padding: 10px;
+}
 .data-table-container label {
   border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
-  color: #4288CE;
+  color: #4288ce;
   display: block;
   font-size: 16px;
   font-weight: bold;
@@ -243,85 +239,76 @@ header {
   color: rgba(0, 0, 0, 0.3);
   font-style: italic;
 }
-.handler {
-  font: 14px "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
-  padding: 10px;
-}
-.handler.active {
-  background: #989898;
-  color: #BBBBBB;
-  font-weight: bold;
-}
 /* prettify code style Uses the Doxy theme as a base */
 pre .str,
 code .str {
   color: #BCD42A;
+  /* string */
 }
-/* string  */
 pre .kwd,
 code .kwd {
   color: #4bb1b1;
   font-weight: bold;
+  /* keyword */
 }
-/* keyword*/
 pre .com,
 code .com {
   color: #888;
   font-weight: bold;
+  /* comment */
 }
-/* comment */
 pre .typ,
 code .typ {
   color: #ef7c61;
+  /* type */
 }
-/* type  */
 pre .lit,
 code .lit {
   color: #BCD42A;
+  /* literal */
 }
-/* literal */
 pre .pun,
 code .pun {
   color: #fff;
   font-weight: bold;
+  /* punctuation */
 }
-/* punctuation  */
 pre .pln,
 code .pln {
   color: #e9e4e5;
+  /* plaintext */
 }
-/* plaintext  */
 pre .tag,
 code .tag {
   color: #4bb1b1;
+  /* html/xml tag */
 }
-/* html/xml tag  */
 pre .htm,
 code .htm {
   color: #dda0dd;
+  /* html tag */
 }
-/* html tag */
 pre .xsl,
 code .xsl {
   color: #d0a0d0;
+  /* xslt tag */
 }
-/* xslt tag */
 pre .atn,
 code .atn {
   color: #ef7c61;
   font-weight: normal;
+  /* html/xml attribute name */
 }
-/* html/xml attribute name */
 pre .atv,
 code .atv {
   color: #bcd42a;
+  /* html/xml attribute value  */
 }
-/* html/xml attribute value  */
 pre .dec,
 code .dec {
   color: #606;
+  /* decimal */
 }
-/* decimal  */
 pre.prettyprint,
 code.prettyprint {
   background: #333;
@@ -334,6 +321,10 @@ code.prettyprint a {
 }
 pre.prettyprint {
   white-space: pre-wrap;
+}
+.linenums {
+  margin-left: 10px;
+  margin: 0;
 }
 .linenums li {
   color: #A5A5A5;
