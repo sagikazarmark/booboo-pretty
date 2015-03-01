@@ -44,7 +44,7 @@ Zepto(function($) {
 
     if (typeof ZeroClipboard !== "undefined") {
         ZeroClipboard.config({
-            moviePath: '//ajax.cdnjs.com/ajax/libs/zeroclipboard/1.3.5/ZeroClipboard.swf',
+            swfPath: '//ajax.cdnjs.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.swf',
         });
 
         var clipEl = document.getElementById("copy-button");
@@ -52,7 +52,7 @@ Zepto(function($) {
         var $clipEl = $(clipEl);
 
         // show the button, when swf could be loaded successfully from CDN
-        clip.on("load", function() {
+        clip.on("ready", function() {
             $clipEl.show();
         });
     }

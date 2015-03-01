@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <script src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/1.3.5/ZeroClipboard.min.js"></script>
+        <script type="text/javascript"><?php echo $this->asset('js/ZeroClipboard.min.js') ?></script>
         <script type="text/javascript"><?php echo $this->asset('js/prettify.min.js') ?></script>
         <script type="text/javascript"><?php echo $this->asset('js/zepto.min.js') ?></script>
         <script type="text/javascript"><?php echo $this->asset('js/booboo.min.js') ?></script>
