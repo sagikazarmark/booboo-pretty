@@ -10,9 +10,15 @@
             "email": "mark.sagikazar@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/sagikazarmark/booboo"
+        }
+    ],
     "require": {
         "php": ">=5.4",
-        "league/booboo": "dev-master"
+        "league/booboo": "dev-inspector_improvements"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.4",

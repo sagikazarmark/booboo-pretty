@@ -19,12 +19,11 @@ namespace League\BooBoo\Formatter\Pretty;
 interface TemplateHelper
 {
     /**
-     * Renders a template
+     * Renders the page
      *
-     * @param string $template
-     * @param array  $data
+     * @param array $data
      *
      * @return string
      */
-    public function render($template, array $data = []);
+    public function render(array $data = []);
 }

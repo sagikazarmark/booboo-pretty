@@ -29,11 +29,6 @@ class PrettyPageFormatter extends AbstractFormatter
     protected $tables = [];
 
     /**
-     * @var string
-     */
-    protected $pageTitle = 'Boo! There was an error.';
-
-    /**
      * @var Pretty\TemplateHelper
      */
     protected $templateHelper;
@@ -59,17 +54,15 @@ class PrettyPageFormatter extends AbstractFormatter
             $code = $this->determineSeverityTextValue($e->getSeverity());
         }
 
+        // TODO: shouldn't this be filtered for being unique?
         $tables = array_merge($this->getDefaultTables(), $this->tables);
 
         $data = [
-            'pageTitle'      => $this->pageTitle,
-            'title'          => $this->pageTitle,
-            'name'           => explode('\\', $inspector->getExceptionName()),
-            'message'        => $e->getMessage(),
+            'inspector'      => $inspector,
+            'exception'      => $e,
             'code'           => $code,
             'plainException' => $this->formatExceptionPlain($inspector),
             'frames'         => $frames,
-            'hasFrames'      => count($frames) > 0,
             'tables'         => $this->processTables($tables),
         ];
 
@@ -167,23 +160,31 @@ class PrettyPageFormatter extends AbstractFormatter
      */
     public function formatExceptionPlain(Inspector $inspector)
     {
-        $message = $inspector->getException()->getMessage();
-        $frames = $inspector->getFrames();
-        $plain = $inspector->getExceptionName();
-        $plain .= ' thrown with message "';
-        $plain .= $message;
-        $plain .= '"'."\n\n";
-        $plain .= "Stacktrace:\n";
-        foreach ($frames as $i => $frame) {
-            $plain .= "#". (count($frames) - $i - 1). " ";
-            $plain .= $frame->getClass() ?: '';
-            $plain .= $frame->getClass() && $frame->getFunction() ? ":" : "";
-            $plain .= $frame->getFunction() ?: '';
-            $plain .= ' in ';
-            $plain .= ($frame->getFile() ?: '<#unknown>');
-            $plain .= ':';
-            $plain .= (int) $frame->getLine(). "\n";
+        $trace = '';
+
+        if (!$inspector->hasFrames()) {
+            $trace = 'No trace';
         }
+
+        foreach ($inspector->getFrames() as $i => $frame) {
+            $plain .= sprintf(
+                "#%d %s%s%s in %s:%d\n",
+                count($frames) - $i - 1,
+                $frame->getClass() ?: '',
+                $frame->getClass() && $frame->getFunction() ? ':' : '',
+                $frame->getFunction() ?: '',
+                $frame->getFile() ?: '<#unknown>',
+                (int) $frame->getLine()
+            );
+        }
+
+        $plain = sprintf(
+            "%s thrown with message \"%s\"\n\nStack trace:\n%s",
+            $inspector->getExceptionName(),
+            $inspector->getException()->getMessage(),
+            $trace
+        );
+
         return $plain;
     }
 }

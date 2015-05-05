@@ -22,6 +22,24 @@ $ composer require league/booboo-pretty
 
 ## Usage
 
+This package ports the Pretty Page handler from the popular [Whoops!](http://filp.github.io/whoops/) to [BooBoo](http://booboo.thephpleague.com/).
+
+Some tweaks that are newly added:
+
+- Stylesheets are compiled from LESS
+- Assets are compiled from composer packages
+- Tables can be added as objects (Array and callable sources are supported out-of-the-box)
+
+
+### Framework integration
+
+As the original one handler, this one is also designed to work as is (without any further modification/integration required). However it has two main downsides:
+
+- Assets must be dumped to the page (which is not a big issue in development environment, but still ugly)
+- The ZeroClipboard flash must be linked from CDN so that it can work without placing any files in the public directory
+
+These can be pretty big issues.
+
 
 ## Testing
 
